@@ -1,5 +1,4 @@
 rm -r build
-rm -r ../install
 
 mkdir build
 cd build

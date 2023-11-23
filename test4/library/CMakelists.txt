@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.16.3)
+
+project(sum)
+
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/../install)
+
+# include_directories(./include)		 
+add_library(mysum src/mysum.cpp)     
+target_include_directories(mysum PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>   # build模式下，该行生效，使用绝对地址
+  $<INSTALL_INTERFACE:include/>                            # install模式下，该行神效，使用相对地址
+)
+
+install(TARGETS mysum
+    EXPORT  mysumTarget       # 输出mysum信息到 mysumTarget 属性中, 包含头文件，target等信息
+    ARCHIVE DESTINATION lib 
+    LIBRARY DESTINATION lib 
+    RUNTIME DESTINATION bin 
+)
+
+install(                       # 输出 mysumTarget 到文件中
+      EXPORT mysumTarget
+      DESTINATION  share/cmake/mysum
+)
+
+install(
+    DIRECTORY include/ 
+    DESTINATION include/
+)
+
+# 生成配置文件放到 build/mysumConfig.cmake 中
+include(CMakePackageConfigHelpers) # 包含了这个头文件，才能使用下面的方法
+configure_package_config_file(
+    ${PROJECT_SOURCE_DIR}/cmake/mysumConfig.cmake.in  
+    ${CMAKE_CURRENT_BINARY_DIR}/mysumConfig.cmake   # 名字必须是${target_name}Config.cmake, 不然find_package找不到
+    INSTALL_DESTINATION share/cmake/mysum           # 地址属性，但是这里不发生拷贝
+)
+
+# 拷贝build/mysumConfig.cmake文件到 ${CMAKE_INSTALL_PREFIX}/share/cmake/mysum 中
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/mysumConfig.cmake 
+    DESTINATION share/cmake/mysum
+)
