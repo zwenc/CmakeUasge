@@ -9,14 +9,14 @@
 
 目录结构如下：
 ```bash
-├── CMakelists.txt			// cmake 文件 1, 负责生成可执行文件
-├── build.sh				// 包含执行cmake的那几个指令，我不想手动敲，就都写在这里了
+├── CMakelists.txt            # cmake 文件 1, 负责生成可执行文件
+├── build.sh                  # 包含执行cmake的那几个指令，我不想手动敲，就都写在这里了
 ├── include
-│   └── temp.h				// 头文件
-├── main.cpp                // 源文件 1  main 函数在这里
+│   └── temp.h                # 头文件
+├── main.cpp                  # 源文件 1  main 函数在这里
 └── subfolder
-    ├── CMakelists.txt		// cmake 文件 2, 负责将当前目录下的cpp文件编译成lib库
-    └── temp.cpp			// 源文件 2  库 里面有个打印字符串的函数
+    ├── CMakelists.txt        # cmake 文件 2, 负责将当前目录下的cpp文件编译成lib库
+    └── temp.cpp              # 源文件 2  库 里面有个打印字符串的函数
 ```
 **核心问题：**
 
@@ -125,7 +125,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/../install)
 # 编译类型，非必须参数，但建议填写。
 set(CMAKE_BUILD_TYPE Debug)
 
-include_directories(./include)		 # 头文件地址
+include_directories(./include)         # 头文件地址
 add_library(mysum src/mysum.cpp)   # 这个位置会生成musum lib库，放在编译目录下，如build
 
 # 下面两个在执行 make install 的时候会把库copy到对应位置
@@ -137,7 +137,7 @@ install(TARGETS mysum
 
 # 拷贝头文件到${CMAKE_INSTALL_PREFIX}/include
 install(
-		# 这个目录其实是build里面的，因为在make之后，修改build/include的值
+        # 这个目录其实是build里面的，因为在make之后，修改build/include的值
     # 再make install, 会影响install的结果
     DIRECTORY include/     
     DESTINATION include/
@@ -153,9 +153,9 @@ install(
 │   │   └── temp.h
 │   ├── main.cpp
 │   └── subfolder
-│       ├── CMakelists.txt		  
+│       ├── CMakelists.txt          
 │       └── temp.cpp
-├── install											# 生成了这个文件夹，里面有库和头文件
+├── install     # 生成了这个文件夹，里面有库和头文件
 │   ├── include
 │   │   └── mysum.h
 │   └── lib
@@ -180,7 +180,7 @@ project(hello)
 include_directories(./include)
 
 include_directories(../install/include)   # 增加库的头文件搜索地址
-link_directories(../install/lib)					# 增加库文件搜索地址
+link_directories(../install/lib)          # 增加库文件搜索地址
 
 add_subdirectory(subfolder)
 
@@ -233,7 +233,7 @@ project(sum)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/../install)
 set(CMAKE_BUILD_TYPE Debug)
 
-## include_directories(./include)		 
+## include_directories(./include)         
 add_library(mysum src/mysum.cpp)     
 target_include_directories(mysum PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>   # build模式下，该行生效，使用绝对地址
@@ -298,7 +298,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/mysumTarget.cmake")  # 头文件，lib库都�
 │   └── share
 │       └── cmake
 │           └── mysum        # 多了这个文件夹
-│               ├── mysumConfig.cmake     # cmake 里面find_package用到这个文件
+│               ├── mysumConfig.cmake        # cmake 里面find_package用到这个文件
 │               ├── mysumTarget-debug.cmake  # 这两个Target里面有很多信息，可以读一下
 │               └── mysumTarget.cmake
 └── library
@@ -322,7 +322,7 @@ project(hello)
 include_directories(./include)
 
 ## include_directories(../install/include)   # 现在不需要了，注释
-## link_directories(../install/lib)		       # 现在不需要了，注释
+## link_directories(../install/lib)          # 现在不需要了，注释
 
 find_package(mysum REQUIRED)
 if(mysum_FOUND) # mysum_FOUND 这个变量会由上面的find_package自动生成
@@ -404,7 +404,7 @@ set(CMAKE_C_COMPILER "/usr/bin/gcc")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
 # 指定 C++ 标准
-set(CMAKE_CXX_STANDARD 20)	  # 使用C++20标准
+set(CMAKE_CXX_STANDARD 20)      # 使用C++20标准
 set(CMAKE_BUILD_TYPE Debug)   # DEBUG 还是 Release 模式放到这里设置
 
 # 优化级别
