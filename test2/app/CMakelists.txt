@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.16.3)
+
+project(hello)
+
+include_directories(./include)
+
+include_directories(../install/include)   # 增加库的头文件搜索地址
+link_directories(../install/lib)		  # 增加库文件搜索地址
+
+add_subdirectory(subfolder)
+
+add_executable(app main.cpp)
+target_link_libraries(app temp mysum)     # 链接到可执行文件里面

@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.16.3)
+
+project(sum)
+
+# install的时候，目录以这个作为相对地址，它默认值为系统目录
+# 如果不想安装在系统目录，该参数建议设置
+# CMAKE_CURRENT_LIST_DIR 这个指的是当前cmake文件所在的地址
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/../install)
+
+# 编译类型，非必须参数，但建议设置。
+set(CMAKE_BUILD_TYPE Debug)
+
+include_directories(./include)		 # 头文件地址
+add_library(mysum src/mysum.cpp)     # 这个位置会生成musum lib库，放在编译目录下，如build
+
+# 下面两个在执行 make install 的时候会把库copy到对应位置
+install(TARGETS mysum
+    ARCHIVE DESTINATION lib # 如果mysum是静态库，则拷贝到${CMAKE_INSTALL_PREFIX}/lib
+    LIBRARY DESTINATION lib # 如果mysum是动态库，则拷贝到${CMAKE_INSTALL_PREFIX}/lib
+    RUNTIME DESTINATION bin # 如果mysum是可执行文件，则拷贝到${CMAKE_INSTALL_PREFIX}/bin
+)
+
+# 拷贝头文件到${CMAKE_INSTALL_PREFIX}/include
+install(
+	# 这个目录其实是build里面的，因为在make之后，修改build/include的值
+    # 再make install, 会影响install的结果
+    DIRECTORY include/ 
+    
+    #这个是install的目标地址
+    DESTINATION include/
+)
