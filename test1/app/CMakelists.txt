@@ -1,0 +1,11 @@
+
+cmake_minimum_required(VERSION 3.16.3)
+
+project(hello)
+
+include_directories(./include)
+
+add_subdirectory(subfolder)
+
+add_executable(app main.cpp)
+target_link_libraries(app temp)
